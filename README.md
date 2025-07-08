@@ -37,5 +37,3 @@ A full-stack **Job Portal** platform where **Job Seekers** can find and apply to
 
 ---
 
-## 🧩 Folder Structure (Backend)
-
