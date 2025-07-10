@@ -1,7 +1,6 @@
 import JWT from 'jsonwebtoken'
 import { UserModel } from '../models/UserModel.js';
 
-
 export const jobSeekerAuthenticate = async(req,res,next)=>{
     const token = req.headers.authorization;
     if(!token)return res.status(401).send({message:"Login to Access Content"});
@@ -35,5 +34,49 @@ export const recruiterAuthenticate = async(req,res,next)=>{
         return res.status(400).send({
             message:"Invalid Token"
         })
+    }
+}
+
+// Working for recruitors , will have to see for Jobseekser!
+export const authorizationChecker =(Model, ownership)=>{
+
+    return async(req,res,next)=>{
+        try {
+        const {id} = req.params;
+        const token= req.headers.authorization;
+        const decodedToken = JWT.verify(token,process.env.JWT_TOKEN_SECRET)
+        const userId = decodedToken.userId;
+          console.log( userId)
+        if(!id){
+            return res.status(400).send({
+                success:false,
+                message:"Missing resource ID "
+            })
+        }   
+        const resource= await Model.findById(id);
+        if(!resource){
+            return res.status(400).send({
+                success:false,
+                message:"Resource not Found",
+            })
+        }
+        console.log( resource[ownership].toString())
+        console.log(resource[ownership].toString() === userId)
+        if(resource[ownership]!=  userId){
+         return res.status(403).json({
+          success: false,
+          message: "Unauthorized: You do not own this resource.",
+        });
+        }
+
+      next();
+
+        } catch (error) {
+            return res.status(500).json({
+        success: false,
+        message: "Authorization check failed.",
+        error: error.message,
+      });
+        }
     }
 }

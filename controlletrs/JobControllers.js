@@ -1,5 +1,5 @@
 import { JobModel } from "../models/JobModel.js";
-
+import JWT from 'jsonwebtoken'
 export const POSTNewJobController = async (req, res) => {
   const {
     job_position,
@@ -11,10 +11,15 @@ export const POSTNewJobController = async (req, res) => {
     requirements,
     salary,
     experienceLevel,
-    education,postedBy,
+    education,
     skills,
     applicants
   } = req.body;
+
+  const token= req.headers.authorization
+  const decodedToken = JWT.verify(token,process.env.JWT_TOKEN_SECRET);
+  const postedBy = decodedToken.userId.toString();
+  console.log("POS",postedBy);
 
   try {
     const isActive = true;
@@ -242,8 +247,40 @@ export const GETSearchJobByKeywordController = async(req,res)=>{
     });
   }
 }
+export const DELETESelectedJobController = async(req,res)=>{
 
+    const {jobIds}= req.body;
+    try {
+if(!Array.isArray(jobIds) || jobIds.length===0){
+      return res.status(400).send({
+        success:false,
+        message:"Invalid Format!"
+      })
+    }
 
+    const DeletedJobs = await JobModel.deleteMany({
+      _id:{$in: jobIds}
+    })
+
+    if(!DeletedJobs){
+      return res.status(400).send({
+        success:false,
+        message:"Unable to Delete jobs-Check Method"
+      })
+    }
+        return res.status(200).send({
+          success:false,
+          message:`${jobIds.length} jobs deleted Successfully`,
+          data:DeletedJobs
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            message:"Unable to Delete Jobs ",
+            error:error.message
+        })
+    }
+}
 // In working
 export const GETJobByRecruitorIdControllers= async(req,res)=>{
   const id= req.id
@@ -263,16 +300,5 @@ export const GETJobByRecruitorIdControllers= async(req,res)=>{
     })
   }
 }
-// In working
-export const DELETESelectedJobController = async(req,res)=>{
 
-    try {
-        
-    } catch (error) {
-        res.status(500).send({
-            success:false,
-            message:"Unable to Delete Jobs ",
-            error:error.message
-        })
-    }
-}
+

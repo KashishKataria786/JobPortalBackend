@@ -1,15 +1,17 @@
 import express from 'express'
-import {  DELETEparticularJobController, GETAllJobController, GETAparticularJobController, GETSearchJobByKeywordController, PATCHJobActiveStatusChangeController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
-import { jobSeekerAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
+import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETSearchJobByKeywordController, PATCHJobActiveStatusChangeController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
+import { authorizationChecker, jobSeekerAuthenticate, recruiterAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
+import { JobModel } from '../models/JobModel.js';
 
 const JobRouter = express.Router();
 
-JobRouter.post('/add-new-job',POSTNewJobController);
-JobRouter.get('/get-all-jobs',jobSeekerAuthenticate,GETAllJobController);
-JobRouter.delete('/delete-job/:id',DELETEparticularJobController);
-JobRouter.patch('/update-job/:id', UPDATEJobController);
+JobRouter.post('/add-new-job',recruiterAuthenticate,POSTNewJobController);
+JobRouter.get('/get-all-jobs',GETAllJobController);
+JobRouter.delete('/delete-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETEparticularJobController);
+JobRouter.patch('/update-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),UPDATEJobController);
 JobRouter.get('/get-job/:id', GETAparticularJobController);
-JobRouter.patch('/change-job-status/:id', PATCHJobActiveStatusChangeController);
+JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'), PATCHJobActiveStatusChangeController);
 JobRouter.get('/search',GETSearchJobByKeywordController);
+JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETESelectedJobController);
 
 export default JobRouter;
