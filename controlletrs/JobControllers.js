@@ -278,8 +278,6 @@ export const DELETESelectedJobController = async (req, res) => {
     });
   }
 };
-
-
 export const PATCHSaveJobController = async (req, res) => {
   try {
     const userId = req.user._id; 
