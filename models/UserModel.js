@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
     designation: {
       type: String,
     },
+    appliedJobs:[
+      {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Job"
+    }
+    ],
     postedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,

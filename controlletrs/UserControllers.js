@@ -26,4 +26,4 @@ export const GETUserProfileController = async (req, res) => {
     });
   }
 };
-      
+

@@ -10,7 +10,7 @@ export const jobSeekerAuthenticate = async(req,res,next)=>{
         const user=await UserModel.findById(decodedToken.userId);
         if(!user)return res.status(401).send({message:"User not Found"});
         if(user.role !='jobseeker')res.status(401).send({message:"Access Denied"})
-        req.user = user;
+        req.user = user._id;
         next();
     } catch (error) {
         return res.status(400).send({

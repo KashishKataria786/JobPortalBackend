@@ -1,5 +1,5 @@
 import express from 'express'
-import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETSearchJobByKeywordController, PATCHJobActiveStatusChangeController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
+import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETSearchJobByKeywordController, PATCHApplyJobController, PATCHJobActiveStatusChangeController, PATCHSaveJobController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
 import { authorizationChecker, jobSeekerAuthenticate, recruiterAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
 import { JobModel } from '../models/JobModel.js';
 
@@ -13,5 +13,6 @@ JobRouter.get('/get-job/:id', GETAparticularJobController);
 JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'), PATCHJobActiveStatusChangeController);
 JobRouter.get('/search',GETSearchJobByKeywordController);
 JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETESelectedJobController);
-
+JobRouter.patch('/apply-job/:id',PATCHApplyJobController);
+JobRouter.patch('/save-job/:id',jobSeekerAuthenticate, PATCHSaveJobController);
 export default JobRouter;
