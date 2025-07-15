@@ -27,3 +27,24 @@ export const GETUserProfileController = async (req, res) => {
   }
 };
 
+
+// Working
+export const PATCHUploadUserResume = async(req,res)=>{
+  const resume = req.body;
+  if(!resume){
+    return res.status(402).send({
+      success:false,
+      message:"Resume not uploaded!",
+      error:error.message
+    })
+  }
+  try {
+    
+  } catch (error) {
+    return res.status(500).send({
+      success:false,
+      message:"Internal Server Error",
+      error:error.message
+    })
+  }
+}

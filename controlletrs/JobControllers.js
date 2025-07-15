@@ -2,6 +2,7 @@ import { JobModel } from "../models/JobModel.js";
 import JWT from "jsonwebtoken";
 import { UserModel } from "../models/UserModel.js";
 
+
 export const POSTNewJobController = async (req, res) => {
   const {
     job_position,
@@ -321,12 +322,38 @@ export const PATCHSaveJobController = async (req, res) => {
     });
   }
 };
+export const GETJobByRecruitorIdControllers = async (req, res) => {
+    const userId = req.user._id.toString(); 
 
+    try {
+      const jobs = await JobModel.find({ postedBy: userId });
+
+      if (!jobs || jobs.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No jobs found for this recruiter.",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        length: jobs.length,
+        message: "Jobs retrieved successfully.",
+        data: jobs,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Unable to get jobs.",
+        error: error.message,
+      });
+    }
+};
 
 // Too many Errors in This module
 export const PATCHApplyJobController = async (req, res) => {
   try {
-    const { id } = req.params;
+    const  id  = req.params.id;
     const userId = req.user;
 
     const job = await JobModel.findById(id);
@@ -350,11 +377,11 @@ export const PATCHApplyJobController = async (req, res) => {
     await UserModel.findByIdAndUpdate(userId, {
       $addToSet: { appliedJobs: id },
     });
-
+ 
     return res.status(200).json({
       success: true,
       message: "Application submitted successfully.",
-      jobId: id,
+      jobId: addjobtoUserSchema,
     });
   } catch (error) {
     return res.status(500).json({
@@ -365,22 +392,6 @@ export const PATCHApplyJobController = async (req, res) => {
   }
 };
 
-// In working
-export const GETJobByRecruitorIdControllers = async (req, res) => {
-  const id = req.id;
-  try {
-    const jobs = await JobModel.find({ postedId: id });
-    return res.status(200).send({
-      success: true,
-      length: jobs.length,
-      message: "Job Derieved Successfully",
-      data: jobs,
-    });
-  } catch (error) {
-    return res.status(500).send({
-      success: false,
-      message: "Unable to GET Jobs",
-      error: error.message,
-    });
-  }
-};
+
+
+
