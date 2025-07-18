@@ -19,6 +19,22 @@ export const jobSeekerAuthenticate = async(req,res,next)=>{
     }
 }
 
+export const commonUserAuthenticate = async (req,res,next)=>{
+    const token = req.headers.authorization;
+        if(!token)return res.status(401).send({message:"Login to Access Content"});
+    try {
+        const decodedToken = JWT.verify(token, process.env.JWT_TOKEN_SECRET);
+        const user=await UserModel.findById(decodedToken.userId);
+        if(!user)return res.status(401).send({message:"User not Found"});
+        req.user = decodedToken;
+        next();
+    } catch (error) {
+        return res.status(400).send({
+            message:"Invalid Token"
+        })
+    }
+}
+
 export const recruiterAuthenticate = async(req,res,next)=>{
 
     const token = req.headers.authorization;
@@ -36,6 +52,9 @@ export const recruiterAuthenticate = async(req,res,next)=>{
         })
     }
 }
+
+
+
 
 // Working for recruitors , will have to see for Jobseekser!
 export const authorizationChecker =(Model, ownership)=>{

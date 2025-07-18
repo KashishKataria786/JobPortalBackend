@@ -38,7 +38,7 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API documentation for the Job Portal MERN backend',
       contact: {
-        name: 'Your Name',
+        name: 'Kashish Kataria',
       },
       servers: [
         {

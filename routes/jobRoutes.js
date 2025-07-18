@@ -78,7 +78,6 @@ JobRouter.get('/get-all-jobs',GETAllJobController);
  *       500:
  *         description: Internal server error
  */
-
 JobRouter.delete('/delete-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETEparticularJobController);
 /**
  * @swagger
@@ -147,7 +146,6 @@ JobRouter.delete('/delete-job/:id',recruiterAuthenticate,authorizationChecker(Jo
  *       500:
  *         description: Server error
  */
-
 JobRouter.patch('/update-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),UPDATEJobController);
 /**
  * @swagger
@@ -182,7 +180,6 @@ JobRouter.patch('/update-job/:id',recruiterAuthenticate,authorizationChecker(Job
  *       500:
  *         description: Unable to get job
  */
-
 JobRouter.get('/get-job/:id', GETAparticularJobController);
 /**
  * @swagger
@@ -220,7 +217,6 @@ JobRouter.get('/get-job/:id', GETAparticularJobController);
  *       500:
  *         description: Server error
  */
-
 JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'), PATCHJobActiveStatusChangeController);
 /**
  * @swagger
@@ -241,7 +237,6 @@ JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChec
  *       500:
  *         description: Search failed
  */
-
 JobRouter.get('/search',GETSearchJobByKeywordController);
 /**
  * @swagger
@@ -273,7 +268,6 @@ JobRouter.get('/search',GETSearchJobByKeywordController);
  *       500:
  *         description: Internal server error
  */
-
 JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETESelectedJobController);
 /**
  * @swagger
@@ -301,7 +295,6 @@ JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker
  *       500:
  *         description: Server error
  */
-
 JobRouter.patch('/save-job/:id',jobSeekerAuthenticate,PATCHSaveJobController);
 /**
  * @swagger
@@ -320,7 +313,6 @@ JobRouter.patch('/save-job/:id',jobSeekerAuthenticate,PATCHSaveJobController);
  *       500:
  *         description: Server error
  */
-
 JobRouter.get('/uploaded-jobs',recruiterAuthenticate,GETJobByRecruitorIdControllers);
 
 JobRouter.patch('/apply-job/:id',PATCHApplyJobController);
