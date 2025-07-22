@@ -97,6 +97,41 @@ export const DELETEUserDataController = async (req, res) => {
     });
   }
 };
+export const GETUserSavedJobController = async (req, res) => {
+  const id = req.user.userId;
+
+  try {
+    const userdata = await UserModel.findById(id);
+
+    if (!userdata || !Array.isArray(userdata.savedJobs)) {
+      return res.status(404).send({
+        success: false,
+        message: "User or saved jobs not found",
+      });
+    }
+
+    if (userdata.savedJobs.length === 0) {
+      return res.status(404).send({
+        success: true,
+        message: "No saved jobs found",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "Jobs retrieved successfully",
+      data: userdata.savedJobs,
+    });
+
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 // Working
 export const PATCHUploadUserResume = async (req, res) => {
   const resume = req.body;

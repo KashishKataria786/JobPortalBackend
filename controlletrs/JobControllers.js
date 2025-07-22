@@ -353,21 +353,29 @@ export const GETJobByRecruitorIdControllers = async (req, res) => {
 // Too many Errors in This module
 export const PATCHApplyJobController = async (req, res) => {
   try {
-    const  id  = req.params.id;
-    const userId = req.user;
+    const jobId = req.params.id;
+    const {userId} = req.user.userId;
 
-    const job = await JobModel.findById(id);
+    const job = await JobModel.findById(jobId);
     if (!job) {
       return res.status(404).send({
         success: false,
-        message: "Job Not Found",
+        message: "Job not found",
       });
     }
 
     if (job.postedBy.toString() === userId) {
       return res.status(400).send({
         success: false,
-        message: "Recruitors cannot apply to Their Own Job",
+        message: "Recruiters cannot apply to their own job",
+      });
+    }
+
+    // Prevent duplicate applicants
+    if (job.applicants.includes(userId)) {
+      return res.status(400).send({
+        success: false,
+        message: "User already applied to this job",
       });
     }
 
@@ -375,18 +383,19 @@ export const PATCHApplyJobController = async (req, res) => {
     await job.save();
 
     await UserModel.findByIdAndUpdate(userId, {
-      $addToSet: { appliedJobs: id },
+      $addToSet: { appliedJobs: jobId },
     });
- 
+
     return res.status(200).json({
       success: true,
-      message: "Application submitted successfully.",
-      jobId: addjobtoUserSchema,
+      message: "Application submitted successfully",
+      jobId: jobId,
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Failed to apply to job.",
+      message: "Failed to apply to job",
       error: error.message,
     });
   }

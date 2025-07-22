@@ -7,7 +7,7 @@ const JobRouter = express.Router();
 
 /**
  * @swagger
- * /api/jobs/add-new-job:
+ * /api/v1/jobs/add-new-job:
  *   post:
  *     summary: Add a New job 
  *     description: Add a new job as a recruitor
@@ -25,7 +25,7 @@ const JobRouter = express.Router();
 JobRouter.post('/add-new-job',recruiterAuthenticate,POSTNewJobController);
 /**
  * @swagger
- * /api/jobs/get-all-jobs:
+ * /api/v1/jobs/get-all-jobs:
  *   get:
  *     summary: Get all jobs
  *     description: Retrieve a list of all jobs posted by recruiters.
@@ -43,7 +43,7 @@ JobRouter.post('/add-new-job',recruiterAuthenticate,POSTNewJobController);
 JobRouter.get('/get-all-jobs',GETAllJobController);
 /**
  * @swagger
- * /api/jobs/delete-job/{id}:
+ * /api/v1/jobs/delete-job/{id}:
  *   delete:
  *     summary: Delete a specific job by ID
  *     tags: [Jobs]
@@ -81,7 +81,7 @@ JobRouter.get('/get-all-jobs',GETAllJobController);
 JobRouter.delete('/delete-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETEparticularJobController);
 /**
  * @swagger
- * /api/jobs/update-job/{id}:
+ * /api/v1/jobs/update-job/{id}:
  *   patch:
  *     summary: Update a job by ID
  *     tags: [Jobs]
@@ -149,7 +149,7 @@ JobRouter.delete('/delete-job/:id',recruiterAuthenticate,authorizationChecker(Jo
 JobRouter.patch('/update-job/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),UPDATEJobController);
 /**
  * @swagger
- * /api/jobs/get-job/{id}:
+ * /api/v1/jobs/get-job/{id}:
  *   get:
  *     summary: Get a particular job by ID
  *     tags: [Jobs]
@@ -183,7 +183,7 @@ JobRouter.patch('/update-job/:id',recruiterAuthenticate,authorizationChecker(Job
 JobRouter.get('/get-job/:id', GETAparticularJobController);
 /**
  * @swagger
- * /api/jobs/change-job-status/{id}:
+ * /api/v1/jobs/change-job-status/{id}:
  *   patch:
  *     summary: Change job active status
  *     tags: [Jobs]
@@ -220,7 +220,7 @@ JobRouter.get('/get-job/:id', GETAparticularJobController);
 JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'), PATCHJobActiveStatusChangeController);
 /**
  * @swagger
- * /api/jobs/search:
+ * /api/v1/jobs/search:
  *   get:
  *     summary: Search jobs by keyword
  *     tags: [Jobs]
@@ -240,7 +240,7 @@ JobRouter.patch('/change-job-status/:id',recruiterAuthenticate,authorizationChec
 JobRouter.get('/search',GETSearchJobByKeywordController);
 /**
  * @swagger
- * /api/jobs/batch-delete-jobs:
+ * /api/v1/jobs/batch-delete-jobs:
  *   delete:
  *     summary: Batch delete jobs
  *     tags: [Jobs]
@@ -271,7 +271,7 @@ JobRouter.get('/search',GETSearchJobByKeywordController);
 JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker(JobModel,'postedBy'),DELETESelectedJobController);
 /**
  * @swagger
- * /api/jobs/save-job/{id}:
+ * /api/v1/jobs/save-job/{id}:
  *   patch:
  *     summary: Save a job to user profile
  *     tags: [Jobs]
@@ -298,7 +298,7 @@ JobRouter.delete('/batch-delete-jobs',recruiterAuthenticate,authorizationChecker
 JobRouter.patch('/save-job/:id',jobSeekerAuthenticate,PATCHSaveJobController);
 /**
  * @swagger
- * /api/jobs/uploaded-jobs:
+ * /api/v1/jobs/uploaded-jobs:
  *   get:
  *     summary: Get jobs uploaded by recruiter
  *     tags: [Jobs]
