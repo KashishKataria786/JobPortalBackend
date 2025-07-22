@@ -35,7 +35,6 @@ export const POSTRegisterUserController = async (req, res) => {
     return res.status(500).send({ message: "Server Error" });
   }
 };
-
 export const POSTLoginUserController = async (req, res) => {
   const { email, password } = req.body;
 

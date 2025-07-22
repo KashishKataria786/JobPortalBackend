@@ -349,7 +349,6 @@ export const GETJobByRecruitorIdControllers = async (req, res) => {
       });
     }
 };
-
 // Too many Errors in This module
 export const PATCHApplyJobController = async (req, res) => {
   try {
@@ -371,7 +370,6 @@ export const PATCHApplyJobController = async (req, res) => {
       });
     }
 
-    // Prevent duplicate applicants
     if (job.applicants.includes(userId)) {
       return res.status(400).send({
         success: false,

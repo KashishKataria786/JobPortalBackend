@@ -1,4 +1,5 @@
 import { UserModel } from "../models/UserModel.js";
+import mongoose from 'mongoose'
 import { JobModel } from "../models/JobModel.js";
 import { sendVerificationMail } from "../utils/VerificationEmail.js";
 import JWT from "jsonwebtoken";
@@ -29,7 +30,6 @@ export const GETUserProfileController = async (req, res) => {
     });
   }
 };
-
 export const POSTUserVerificationController = async (req, res) => {
   const token = req.headers.authorization;
   const emailTo = req.user.email;
@@ -59,7 +59,6 @@ export const POSTUserVerificationController = async (req, res) => {
     });
   }
 };
-
 export const DELETEUserDataController = async (req, res) => {
   const role = req.user.role;
   const id = req.user.userId;
@@ -131,7 +130,56 @@ export const GETUserSavedJobController = async (req, res) => {
     });
   }
 };
+export const PATCHRemoveUserSavedJobController = async (req, res) => {
+  const userId = req.user.userId;
+  const { id: jobId } = req.params;
 
+  console.log("Job ID to remove:", jobId);
+  console.log("User ID:", userId);
+
+  try {
+    const userData = await UserModel.findById(userId);
+    if (!userData) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Convert ObjectIds to string for comparison
+    const isAvailable = userData.savedJobs.some(
+      (savedId) => savedId.toString() === jobId
+    );
+
+    if (!isAvailable) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found in saved jobs",
+      });
+    }
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { savedJobs: new mongoose.Types.ObjectId(jobId) },
+      },
+      { new: true }
+    );
+
+    return res.status(200).send({
+      success: true,
+      message: "Job removed successfully",
+      data: updatedUser.savedJobs,
+    });
+
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
 // Working
 export const PATCHUploadUserResume = async (req, res) => {
   const resume = req.body;
@@ -151,3 +199,4 @@ export const PATCHUploadUserResume = async (req, res) => {
     });
   }
 };
+
