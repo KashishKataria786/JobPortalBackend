@@ -227,6 +227,42 @@ if (job.applicants.some(applicant => applicant._id.toString() === userId)) {
     });
   }
 };
+export const PATCHAddUserSkillsController =async(req,res)=>{
+  const {userId} = req.user;
+  const {skills} = req.body;
+  if(!skills || !Array.isArray(skills)){
+    return res.status(400).send({
+      success:false,
+      message:"Skills must be an array"
+    })
+  }
+  try {
+    const updatedUser =await UserModel.findByIdAndUpdate(
+      userId,
+      {$addToSet:{skills:{$each:skills}}},
+      {new:true}
+    )
+    if (!updatedUser) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "Skills added successfully",
+      user: updatedUser,
+    });
+
+  } catch (error) {
+    return res.status(500).send({
+      success:false,
+      message:"Internal Server error"
+    })
+  }
+}
+
 // Working
 export const PATCHUploadUserResume = async (req, res) => {
   const resume = req.body;

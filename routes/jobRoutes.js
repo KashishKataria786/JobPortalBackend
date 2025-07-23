@@ -314,4 +314,5 @@ JobRouter.patch('/save-job/:id',jobSeekerAuthenticate,PATCHSaveJobController);
  *         description: Server error
  */
 JobRouter.get('/uploaded-jobs',recruiterAuthenticate,GETJobByRecruitorIdControllers);
+
 export default JobRouter;

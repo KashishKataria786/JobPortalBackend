@@ -6,6 +6,7 @@ import {
   GETUserSavedJobController,
   PATCHRemoveUserSavedJobController,
   PATCHApplyJobController,
+  PATCHAddUserSkillsController,
 } from "../controlletrs/UserControllers.js";
 import {
   commonUserAuthenticate,
@@ -349,4 +350,84 @@ UserRoutes.patch(
   commonUserAuthenticate,
   PATCHApplyJobController
 );
+/**
+ * @swagger
+ * /api/user/add-skill:
+ *   patch:
+ *     summary: Add skills to user profile
+ *     description: Authenticated users can add one or more skills to their profile. Duplicate entries are ignored.
+ *     tags:
+ *       - User
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               skills:
+ *                 type: array
+ *                 description: Array of skills to add
+ *                 items:
+ *                   type: string
+ *                 example: ["React", "Node.js", "MongoDB"]
+ *     responses:
+ *       200:
+ *         description: Skills added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Skills added successfully
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid input (skills not an array)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Skills must be an array
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Internal Server error
+ */
+  UserRoutes.patch("/add-skill",commonUserAuthenticate,PATCHAddUserSkillsController);
 export default UserRoutes;
