@@ -1,8 +1,6 @@
 import express from "express";
 import { POSTLoginUserController, POSTRegisterUserController } from "../controlletrs/AuthControllers.js";
 
-
-
 const AuthRouter = express.Router();
 
 /**

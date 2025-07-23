@@ -1,6 +1,17 @@
-import express from 'express'
-import { DELETEUserDataController, GETUserProfileController, POSTUserVerificationController, GETUserSavedJobController, PATCHRemoveUserSavedJobController } from '../controlletrs/UserControllers.js';
-import { commonUserAuthenticate, jobSeekerAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
+import express from "express";
+import {
+  DELETEUserDataController,
+  GETUserProfileController,
+  POSTUserVerificationController,
+  GETUserSavedJobController,
+  PATCHRemoveUserSavedJobController,
+   PATCHApplyJobController 
+} from "../controlletrs/UserControllers.js";
+import {
+  commonUserAuthenticate,
+  jobSeekerAuthenticate,
+} from "../middlewares/AuthenticateMiddleware.js";
+
 const UserRoutes = express.Router();
 
 /**
@@ -36,7 +47,7 @@ const UserRoutes = express.Router();
  *       500:
  *         description: Server error
  */
-UserRoutes.get('/profile-data/:id', GETUserProfileController);
+UserRoutes.get("/profile-data/:id", GETUserProfileController);
 /**
  * @swagger
  * /api/v1/user/verify-email:
@@ -53,7 +64,11 @@ UserRoutes.get('/profile-data/:id', GETUserProfileController);
  *       500:
  *         description: Internal server error
  */
-UserRoutes.post('/verify-email',commonUserAuthenticate, POSTUserVerificationController);
+UserRoutes.post(
+  "/verify-email",
+  commonUserAuthenticate,
+  POSTUserVerificationController
+);
 /**
  * @swagger
  * /api/v1/user/delete-account:
@@ -110,7 +125,11 @@ UserRoutes.post('/verify-email',commonUserAuthenticate, POSTUserVerificationCont
  *                   type: string
  *                   example: Some error message
  */
-UserRoutes.delete('/delete-account',commonUserAuthenticate, DELETEUserDataController);
+UserRoutes.delete(
+  "/delete-account",
+  commonUserAuthenticate,
+  DELETEUserDataController
+);
 /**
  * @swagger
  * /api/v1/user/saved-jobs:
@@ -170,7 +189,11 @@ UserRoutes.delete('/delete-account',commonUserAuthenticate, DELETEUserDataContro
  *                   type: string
  */
 
-UserRoutes.get('/saved-jobs',commonUserAuthenticate, GETUserSavedJobController);
+UserRoutes.get(
+  "/saved-jobs",
+  commonUserAuthenticate,
+  GETUserSavedJobController
+);
 /**
  * @swagger
  * /api/v1/user/remove-saved-job/{id}:
@@ -238,6 +261,10 @@ UserRoutes.get('/saved-jobs',commonUserAuthenticate, GETUserSavedJobController);
  *                   type: string
  */
 
-UserRoutes.patch('/remove-saved-job/:id',commonUserAuthenticate , PATCHRemoveUserSavedJobController );
-
-export default UserRoutes   
+UserRoutes.patch(
+  "/remove-saved-job/:id",
+  commonUserAuthenticate,
+  PATCHRemoveUserSavedJobController
+);
+UserRoutes.patch('/apply-job/:id',commonUserAuthenticate,PATCHApplyJobController);
+export default UserRoutes;

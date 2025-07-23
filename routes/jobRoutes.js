@@ -1,5 +1,5 @@
 import express from 'express'
-import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETJobByRecruitorIdControllers, GETSearchJobByKeywordController, PATCHApplyJobController, PATCHJobActiveStatusChangeController, PATCHSaveJobController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
+import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETJobByRecruitorIdControllers, GETSearchJobByKeywordController, PATCHJobActiveStatusChangeController, PATCHSaveJobController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
 import { authorizationChecker, jobSeekerAuthenticate, recruiterAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
 import { JobModel } from '../models/JobModel.js';
 
@@ -314,6 +314,4 @@ JobRouter.patch('/save-job/:id',jobSeekerAuthenticate,PATCHSaveJobController);
  *         description: Server error
  */
 JobRouter.get('/uploaded-jobs',recruiterAuthenticate,GETJobByRecruitorIdControllers);
-
-JobRouter.patch('/apply-job/:id',PATCHApplyJobController);
 export default JobRouter;
