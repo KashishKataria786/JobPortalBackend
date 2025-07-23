@@ -5,7 +5,7 @@ import {
   POSTUserVerificationController,
   GETUserSavedJobController,
   PATCHRemoveUserSavedJobController,
-   PATCHApplyJobController 
+  PATCHApplyJobController,
 } from "../controlletrs/UserControllers.js";
 import {
   commonUserAuthenticate,
@@ -266,5 +266,87 @@ UserRoutes.patch(
   commonUserAuthenticate,
   PATCHRemoveUserSavedJobController
 );
-UserRoutes.patch('/apply-job/:id',commonUserAuthenticate,PATCHApplyJobController);
+
+/**
+ * @swagger
+ * /api/v1/user/apply-job/{id}:
+ *   patch:
+ *     summary: Apply to a job
+ *     description: Authenticated users (except recruiters who posted the job) can apply to a job using this endpoint.
+ *     tags:
+ *       - User
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the job to apply for
+ *         schema:
+ *           type: string
+ *           example: "64f26d09e2d9842c0d3cf64e"
+ *     responses:
+ *       200:
+ *         description: Successfully applied to the job
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Application submitted successfully
+ *                 jobId:
+ *                   type: string
+ *                   example: "64f26d09e2d9842c0d3cf64e"
+ *       400:
+ *         description: Bad request (user already applied or recruiter trying to apply)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: User already applied to this job
+ *       404:
+ *         description: Job not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Job not found
+ *       500:
+ *         description: Internal server error while applying
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Failed to apply to job
+ *                 error:
+ *                   type: string
+ */
+UserRoutes.patch(
+  "/apply-job/:id",
+  commonUserAuthenticate,
+  PATCHApplyJobController
+);
 export default UserRoutes;
