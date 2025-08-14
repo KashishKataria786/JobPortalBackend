@@ -14,8 +14,6 @@ export const POSTRegisterUserController = async (req, res) => {
     if (existingUser) {
       return res.status(422).send({ message: "User Already Exists" });
     }
-
-    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new UserModel({
@@ -46,13 +44,13 @@ export const POSTLoginUserController = async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(401).send({ message: "Invalid credentials" });
+      return res.status(401).send({ success:false, message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).send({ message: "Invalid credentials" });
+      return res.status(401).send({success:false, message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
@@ -77,7 +75,7 @@ export const POSTLoginUserController = async (req, res) => {
     return res.status(200).send({
       message: `Welcome back, ${user.name}`,
       token,
-      user: safeUser,
+      data: safeUser,
     });
 
   } catch (error) {

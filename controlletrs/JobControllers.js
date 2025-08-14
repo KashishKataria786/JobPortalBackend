@@ -19,6 +19,7 @@ export const POSTNewJobController = async (req, res) => {
     applicants,
   } = req.body;
 
+  const company_logo = req.file?.path || "";
   const token = req.headers.authorization;
   const decodedToken = JWT.verify(token, process.env.JWT_TOKEN_SECRET);
   const postedBy = decodedToken.userId.toString();
@@ -43,6 +44,7 @@ export const POSTNewJobController = async (req, res) => {
     const newJob = new JobModel({
       job_position,
       company,
+      company_logo,
       location,
       jobType,
       workMode,

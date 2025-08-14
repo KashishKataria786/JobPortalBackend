@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    profile_image:{
+      type:String
+    },
     phone:{
         type:String,
     },
@@ -43,6 +46,9 @@ const userSchema = new mongoose.Schema(
     ],
     company: {
       type: String,
+    },
+    company_logo:{
+      type:String
     },
     designation: {
       type: String,

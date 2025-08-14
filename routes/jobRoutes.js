@@ -2,6 +2,7 @@ import express from 'express'
 import {  DELETEparticularJobController, DELETESelectedJobController, GETAllJobController, GETAparticularJobController, GETJobByRecruitorIdControllers, GETSearchJobByKeywordController, PATCHJobActiveStatusChangeController, PATCHSaveJobController, POSTNewJobController, UPDATEJobController } from '../controlletrs/JobControllers.js';
 import { authorizationChecker, jobSeekerAuthenticate, recruiterAuthenticate } from '../middlewares/AuthenticateMiddleware.js';
 import { JobModel } from '../models/JobModel.js';
+import upload from '../middlewares/CloudinaryUpload.js';
 
 const JobRouter = express.Router();
 
@@ -22,7 +23,7 @@ const JobRouter = express.Router();
  *               items:
  *                 $ref: '../models/JobModel.js'
  */
-JobRouter.post('/add-new-job',recruiterAuthenticate,POSTNewJobController);
+JobRouter.post('/add-new-job',recruiterAuthenticate,upload.single('company_logo') , POSTNewJobController);
 /**
  * @swagger
  * /api/v1/jobs/get-all-jobs:

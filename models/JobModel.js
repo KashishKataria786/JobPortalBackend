@@ -11,6 +11,9 @@ const JobSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  company_logo:{
+    type:String
+  },
   location: {
     type: String,
     required: true,

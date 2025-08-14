@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 connectDatabase();
 
 
-app.use('/api/v1/users',AuthRouter);
+app.use('/api/v1/auth',AuthRouter);
 app.use('/api/v1/user',UserRoutes);
 app.use('/api/v1/job',JobRouter);
 

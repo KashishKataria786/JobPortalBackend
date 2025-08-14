@@ -98,7 +98,7 @@ export const DELETEUserDataController = async (req, res) => {
 };
 export const GETUserSavedJobController = async (req, res) => {
   const id = req.user.userId;
-
+console.log(id);
   try {
     const userdata = await UserModel.findById(id);
 
